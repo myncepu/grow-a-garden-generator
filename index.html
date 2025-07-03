@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grow A Garden Generator - Free Professional Garden Planning Tool & Roblox Guide</title>
+    <meta name="description" content="Use our free Grow A Garden Generator to create perfect garden layouts, plan crops, and design your dream garden. Professional Grow A Garden Generator tools for beginners and experts with comprehensive tutorials and interactive features.">
+    <meta name="keywords" content="Grow A Garden Generator, garden planning tool, roblox grow a garden, garden layout design, crop planning, garden simulator, free garden generator, roblox garden game, garden design tool, plant selection guide">
+    <meta name="author" content="Grow A Garden Generator Team">
+    <meta property="og:title" content="Grow A Garden Generator - Free Professional Garden Planning Tool">
+    <meta property="og:description" content="Create perfect garden layouts with our free Grow A Garden Generator. Professional garden planning made easy with interactive tools and comprehensive tutorials.">
+    <meta property="og:type" content="website">
+    <meta name="robots" content="index, follow">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            min-height: 100vh;
+            color: #333;
+            position: relative;
+        }
+
+        .container {
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-content {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .item {
+            background: #f9f9f9;
+            border: 3px solid transparent;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .item:hover {
+            border-color: #4CAF50;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .item.selected {
+            border-color: #4CAF50;
+            background: #e8f5e8;
+        }
+
+        .item.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .item-emoji {
+            font-size: 60px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+        }
+
+        .item-emoji img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-height: calc(100vh - 130px);
+            overflow-y: auto;
+            z-index: 1000;
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+        }
+
+        .sidebar-header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .selected-category {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .selected-category:last-child {
+            border-bottom: none;
+        }
+
+        .selected-category h4 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .selected-items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
+        }
+
+        .selected-item {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+        }
+
+        .selected-item-emoji {
+            font-size: 30px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+        }
+
+        .selected-item-emoji img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        .selected-item-name {
+            font-size: 10px;
+            color: #666;
+            line-height: 1.2;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #4CAF50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Header Styles */
+        .site-header {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+            color: white;
+            padding: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .logo p {
+            margin: 2px 0 0;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        .header-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .header-nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            color: #2E7D32;
+            margin-bottom: 20px;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-features span {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #4CAF50;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-features span:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Roblox Section */
+        .roblox-section {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .username-section h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .username-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .username-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 15px;
+            min-width: 200px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .generate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal h3 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .progress-info {
+            background: #f0f8ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .processing-steps {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .processing-steps li {
+            padding: 8px 0;
+            color: #666;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            margin: 2px 0;
+        }
+
+        .processing-steps li.completed {
+            color: #4CAF50;
+            background: #e8f5e8;
+            padding-left: 10px;
+        }
+
+        .processing-steps li.current {
+            color: #2196F3;
+            font-weight: bold;
+            background: #e3f2fd;
+            padding-left: 10px;
+        }
+
+        .step-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ddd;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .step-icon.completed {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .step-icon.current {
+            background: #2196F3;
+            color: white;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .reveal-message {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .reveal-message h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .reveal-message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translate(-50%, -60%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        /* Garden Grid Styles */
+        .garden-section {
+            background: white;
+            margin: 30px 0;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .garden-header {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .garden-header h2 {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .garden-container {
+            padding: 30px;
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            text-align: center;
+        }
+
+        .garden-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .garden-plot {
+            width: 120px;
+            height: 120px;
+            background: #8B4513;
+            border: 3px solid #654321;
+            border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .garden-plot:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .plot-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+        }
+
+        .plot-status {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            max-width: calc(100% - 16px);
+        }
+
+        .sun-icon, .water-icon {
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .garden-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            max-width: 600px;
+            margin: 30px auto 0;
+        }
+
+        .garden-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .garden-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .sow-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+
+        .water-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+        }
+
+        .sunlight-btn {
+            background: linear-gradient(135deg, #FF9800, #F57C00);
+        }
+
+        .random-btn {
+            background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+            grid-column: 1 / -1;
+        }
+
+        .garden-message {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .plot-empty {
+            color: #666;
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+            
+            .roblox-section {
+                margin: 15px 0;
+                padding: 20px;
+            }
+            
+            .roblox-section h2 {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+            
+            .username-input {
+                padding: 12px;
+                font-size: 1rem;
+                margin: 10px 0;
+            }
+            
+            .generate-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+                margin: 10px 0;
+            }
+            
+            .section {
+                margin-bottom: 20px;
+            }
+            
+            .section-header {
+                padding: 15px;
+            }
+            
+            .section-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .section-header p {
+                font-size: 0.9rem;
+                margin-top: 5px;
+            }
+            
+            .items-grid {
+                padding: 15px;
+                gap: 10px;
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .item {
+                padding: 10px;
+            }
+            
+            .item-emoji {
+                font-size: 40px;
+                height: 60px;
+            }
+
+            .item-emoji img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .item-name {
+                font-size: 12px;
+            }
+            
+            .garden-section .garden-header {
+                padding: 15px;
+            }
+            
+            .garden-section .garden-header h2 {
+                font-size: 1.4rem;
+            }
+            
+            .garden-section .garden-header p {
+                font-size: 0.9rem;
+                margin-top: 5px;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 70px;
+                right: 10px;
+                width: calc(33.333vw - 10px);
+                max-width: 300px;
+                max-height: 200px;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.98);
+                -webkit-backdrop-filter: blur(20px);
+                backdrop-filter: blur(20px);
+                overflow: hidden;
+                transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            }
+            
+            .sidebar.collapsed {
+                max-height: 60px;
+            }
+            
+            .sidebar:hover {
+                transform: none;
+                background: rgba(255, 255, 255, 1);
+            }
+            
+            .sidebar-header {
+                cursor: pointer;
+                padding: 10px;
+                position: relative;
+            }
+            
+            .sidebar-header h3 {
+                font-size: 16px;
+                margin: 0;
+            }
+            
+            .sidebar-header::after {
+                content: '▼';
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: transform 0.3s ease;
+                font-size: 12px;
+            }
+            
+            .sidebar.collapsed .sidebar-header::after {
+                transform: translateY(-50%) rotate(-90deg);
+            }
+            
+            .selected-category {
+                padding: 8px 15px;
+            }
+            
+            .selected-category h4 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .selected-items-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            
+            .selected-item {
+                padding: 4px;
+                border-radius: 6px;
+                min-width: 45px;
+            }
+            
+            .selected-item-emoji {
+                font-size: 20px;
+                height: 25px;
+                margin-bottom: 2px;
+            }
+
+            .selected-item-emoji img {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .selected-item-name {
+                font-size: 9px;
+                line-height: 1.1;
+            }
+            
+            .empty-message {
+                font-size: 12px;
+                padding: 10px;
+                text-align: center;
+                color: #999;
+            }
+            
+            .items-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .modal {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .garden-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                max-width: 300px;
+            }
+            
+            .garden-plot {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .plot-content {
+                font-size: 30px;
+            }
+            
+            .plot-status {
+                top: 6px;
+                left: 6px;
+                right: 6px;
+                font-size: 12px;
+                max-width: calc(100% - 12px);
+            }
+            
+            .sun-icon, .water-icon {
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
+            }
+            
+            .garden-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Info Sections Styles */
+        .info-section {
+            background: white;
+            margin: 40px 0;
+            padding: 60px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .container-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .info-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2E7D32;
+            margin-bottom: 50px;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #4CAF50;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* How to Use Section */
+        .how-to-section {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e8f5e8 100%);
+        }
+
+        .steps-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            background: #4CAF50;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 25px;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .step-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Why Use Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+            transition: transform 0.3s ease;
+        }
+
+        .benefit:hover {
+            transform: translateX(10px);
+        }
+
+        .benefit h3 {
+            color: #2E7D32;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .benefit p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .about-section p {
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        /* Tutorials Section */
+        .tutorials-section {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+        }
+
+        .tutorials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .tutorial-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .tutorial-video {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .tutorial-video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .tutorial-content {
+            padding: 20px;
+        }
+
+        .tutorial-content h3 {
+            color: #2E7D32;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .tutorial-content p {
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .tutorial-features {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .tutorial-features h3 {
+            color: #2E7D32;
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: #e8f5e8;
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-item span:last-child {
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: #f8f9fa;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .faq-item h3 {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            margin: 0;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .faq-item h3:hover {
+            background: #45a049;
+        }
+
+        .faq-item p {
+            padding: 20px;
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            background: #2E7D32;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .footer-section h3, .footer-section h4 {
+            margin-bottom: 20px;
+            color: #a8e6cf;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #a8e6cf;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #4CAF50;
+            margin-top: 40px;
+            padding-top: 20px;
+            text-align: center;
+            color: #a8e6cf;
+        }
+
+        /* Mobile Responsive Updates */
+        @media (max-width: 768px) {
+            .site-header {
+                padding: 8px 0;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 8px;
+                padding: 0 10px;
+            }
+            
+            .logo h1 {
+                font-size: 1.3rem;
+                margin: 0;
+            }
+            
+            .logo p {
+                font-size: 0.75rem;
+                margin: 2px 0 0;
+            }
+            
+            .header-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px;
+            }
+            
+            .header-nav a {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .hero-section {
+                padding: 30px 15px;
+                margin-bottom: 20px;
+            }
+            
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+            
+            .hero-features {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .hero-features span {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-number {
+                margin: 0 auto 20px;
+            }
+            
+            .tutorials-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .tutorial-video {
+                height: 200px;
+            }
+            
+            .tutorial-content {
+                padding: 15px;
+            }
+            
+            .tutorial-content h3 {
+                font-size: 1.1rem;
+            }
+            
+            .tutorial-features {
+                padding: 20px;
+            }
+            
+            .features-list {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .feature-item {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <main class="main-content">
+            <!-- Header -->
+            <header class="site-header">
+                <div class="header-content">
+                    <div class="logo">
+                        <h1>🌱 Grow A Garden Generator</h1>
+                        <p>Professional garden planning made easy</p>
+                    </div>
+                    <nav class="header-nav">
+                        <a href="#features">Features</a>
+                        <a href="#how-to-use">How to Use</a>
+                        <a href="#tutorials">Tutorials</a>
+                        <a href="#faq">FAQ</a>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                    </nav>
+                </div>
+            </header>
+
+            <div class="hero-section">
+                <h1>🌱 Free Grow A Garden Generator - Ultimate Garden Planning Tool 🌱</h1>
+                <p>Welcome to the most comprehensive Grow A Garden Generator available online! Our free Grow A Garden Generator empowers gardeners of all skill levels to create stunning garden layouts, plan seasonal crop rotations, and design their dream gardens with professional precision. Whether you're a beginner taking your first steps into gardening or an experienced horticulturist looking for advanced planning tools, our Grow A Garden Generator provides everything you need.</p>
+                
+                <p>Our innovative Grow A Garden Generator combines cutting-edge garden design technology with user-friendly interfaces, making garden planning accessible to everyone. From selecting the perfect plants for your climate to organizing efficient crop rotations, our Grow A Garden Generator streamlines the entire garden planning process. Experience the power of professional garden design with our completely free Grow A Garden Generator that thousands of gardeners trust worldwide.</p>
+                
+                <div class="hero-features">
+                    <span>🌱 Professional Garden Layout Design</span>
+                    <span>🍄 Advanced Crop Planning System</span>
+                    <span>🌸 Smart Plant Recommendations</span>
+                    <span>📅 Seasonal Planting Schedule</span>
+                    <span>🎮 Interactive Garden Simulator</span>
+                    <span>📚 Comprehensive Video Tutorials</span>
+                </div>
+            </div>
+
+            <!-- Roblox Items Generator Section -->
+            <div class="roblox-section">
+                <h2>🎮 FREE Roblox Grow A Garden Generator Items</h2>
+                <p>Experience our Roblox Grow A Garden Generator demo - Learn how fake generators work while discovering our real garden planning tools!</p>
+                <div class="roblox-generator">
+                    <label for="username">Enter your Roblox Username:</label>
+                    <input type="text" class="username-input" id="username" placeholder="Your Roblox Username" maxlength="50">
+                    <button class="generate-btn" onclick="startGeneration()" id="generate-btn" disabled>
+                        🚀 Generate FREE Items!
+                    </button>
+                    <p class="disclaimer">⚡ Works 100% | No Survey | No Download Required</p>
+                </div>
+            </div>
+
+            <!-- Featured Plants Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>🌱 Popular Garden Plants</h2>
+                    <p>Select your favorite plants to grow in your garden</p>
+                </div>
+                <div class="items-grid">
+                    <div class="item" onclick="toggleItem(this, 'Watermelon', 'plants')">
+                        <div class="item-emoji"><img src="assets/images/plants/Watermelon.webp" alt="Watermelon"></div>
+                        <div class="item-name">Watermelon</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Pumpkin', 'plants')">
+                        <div class="item-emoji"><img src="assets/images/plants/Pumpkin.webp" alt="Pumpkin"></div>
+                        <div class="item-name">Pumpkin</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Pepper', 'plants')">
+                        <div class="item-emoji"><img src="assets/images/plants/Pepper.webp" alt="Pepper"></div>
+                        <div class="item-name">Pepper</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Mushroom', 'plants')">
+                        <div class="item-emoji"><img src="assets/images/plants/Mushroom.webp" alt="Mushroom"></div>
+                        <div class="item-name">Mushroom</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popular Garden Pets Section -->
+            <section class="section">
+                <div class="section-header">
+                    <h2>🐾 Popular Garden Pets</h2>
+                    <p>Choose cute animals to keep you company in your garden</p>
+                </div>
+                <div class="items-grid">
+                    <div class="item" onclick="toggleItem(this, 'Crab', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Crab.webp" alt="Crab"></div>
+                        <div class="item-name">Crab</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Bunny', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Bunny.webp" alt="Bunny"></div>
+                        <div class="item-name">Bunny</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Dog', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Dog.webp" alt="Dog"></div>
+                        <div class="item-name">Dog</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Golden Lab', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Golden-Lab.webp" alt="Golden Lab"></div>
+                        <div class="item-name">Golden Lab</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Bee', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Bee.webp" alt="Bee"></div>
+                        <div class="item-name">Bee</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Cat', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Cat.webp" alt="Cat"></div>
+                        <div class="item-name">Cat</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Chicken', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Chicken.webp" alt="Chicken"></div>
+                        <div class="item-name">Chicken</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Rooster', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Rooster.webp" alt="Rooster"></div>
+                        <div class="item-name">Rooster</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Toucan', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Toucan.webp" alt="Toucan"></div>
+                        <div class="item-name">Toucan</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Sea Turtle', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Sea-Turtle.webp" alt="Sea Turtle"></div>
+                        <div class="item-name">Sea Turtle</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Hedgehog', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Hedgehog.webp" alt="Hedgehog"></div>
+                        <div class="item-name">Hedgehog</div>
+                    </div>
+                    <div class="item" onclick="toggleItem(this, 'Kiwi', 'pets')">
+                        <div class="item-emoji"><img src="assets/images/pets/Kiwi.webp" alt="Kiwi"></div>
+                        <div class="item-name">Kiwi</div>
+                    </div>
+                </div>
+            </section>
+
+                         <!-- Garden Grid Section -->
+             <section class="garden-section">
+                 <div class="garden-header">
+                     <h2>🌻 Interactive Grow A Garden Generator Simulator</h2>
+                     <p>Experience the core functionality of our Grow A Garden Generator with this interactive planning grid. Design your garden layout using our professional garden planning tools.</p>
+                 </div>
+                 <div class="garden-container">
+                     <div class="garden-message" id="garden-message">
+                         No empty plots available! Try harvesting some plants.
+                     </div>
+                     
+                     <div class="garden-grid" id="garden-grid">
+                         <div class="garden-plot" data-plot="0">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🌱</div>
+                         </div>
+                         <div class="garden-plot" data-plot="1">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🌻</div>
+                         </div>
+                         <div class="garden-plot" data-plot="2">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🌿</div>
+                         </div>
+                         <div class="garden-plot" data-plot="3">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🌸</div>
+                         </div>
+                         <div class="garden-plot" data-plot="4">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️</span>
+                                 <span class="water-icon">💧💧</span>
+                             </div>
+                             <div class="plot-content">🌹</div>
+                         </div>
+                         <div class="garden-plot" data-plot="5">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🍀</div>
+                         </div>
+                         <div class="garden-plot" data-plot="6">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🍀</div>
+                         </div>
+                         <div class="garden-plot" data-plot="7">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content plot-empty">🕳️</div>
+                         </div>
+                         <div class="garden-plot" data-plot="8">
+                             <div class="plot-status">
+                                 <span class="sun-icon">☀️☀️☀️</span>
+                                 <span class="water-icon">💧</span>
+                             </div>
+                             <div class="plot-content">🌲</div>
+                         </div>
+                     </div>
+                     
+                     <div class="garden-actions">
+                         <button class="garden-btn sow-btn" onclick="sowSeed()">Sow Seed</button>
+                         <button class="garden-btn water-btn" onclick="waterPlants()">Water Plants</button>
+                         <button class="garden-btn sunlight-btn" onclick="addSunlight()">Add Sunlight</button>
+                         <button class="garden-btn random-btn" onclick="growRandomly()">Grow A Garden Randomly</button>
+                     </div>
+                 </div>
+             </section>
+        </main>
+
+        <!-- Selected Items Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span>🎯</span>
+                <h3>Your Selection</h3>
+            </div>
+            
+            <div class="selected-category" id="plants-section">
+                <h4>🌱 Plants Selected:</h4>
+                <div class="selected-items-list" id="selected-plants">
+                    <div class="empty-message">No plants selected yet</div>
+                </div>
+            </div>
+            
+            <div class="selected-category" id="pets-section">
+                <h4>🐾 Pets Selected:</h4>
+                <div class="selected-items-list" id="selected-pets">
+                    <div class="empty-message">No pets selected yet</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="info-section features-section">
+        <div class="container-content">
+            <h2>🌟 Advanced Features of Our Grow A Garden Generator</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 40px;">
+                Discover why our Grow A Garden Generator stands out as the premier garden planning solution. Our comprehensive Grow A Garden Generator offers professional-grade features that transform how you approach garden design and crop management.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Intelligent Plant Selection System</h3>
+                    <p>Our Grow A Garden Generator features an advanced plant database with detailed growing requirements, companion planting suggestions, and seasonal recommendations. Choose from carefully curated plants with professional-grade care instructions and optimal placement strategies.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Interactive Garden Planning Grid</h3>
+                    <p>Experience the power of our Grow A Garden Generator's intuitive drag-and-drop interface. Design complex garden layouts with precision using our professional grid system that visualizes spacing, sunlight patterns, and water distribution across your entire garden space.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🐾</div>
+                    <h3>Ecosystem-Friendly Garden Design</h3>
+                    <p>The Grow A Garden Generator includes beneficial companion animals and insects that enhance your garden's natural ecosystem. Create balanced environments where plants and beneficial creatures work together for optimal garden health and productivity.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Comprehensive Seasonal Planning</h3>
+                    <p>Our Grow A Garden Generator provides detailed seasonal calendars with precise planting, harvesting, and maintenance schedules. Plan your garden activities months in advance with weather-optimized recommendations for maximum yield and plant health.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>Advanced Water & Light Management</h3>
+                    <p>Monitor and optimize resource allocation with our Grow A Garden Generator's smart tracking system. Ensure each plant receives appropriate water and sunlight levels while maximizing garden efficiency and reducing waste through intelligent resource management.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Gamified Learning Experience</h3>
+                    <p>Transform garden planning into an engaging experience with our Grow A Garden Generator's game-like interface. Learn through interactive tutorials, complete garden challenges, and track your progress as you develop advanced gardening skills.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Section -->
+    <section id="how-to-use" class="info-section how-to-section">
+        <div class="container-content">
+            <h2>📋 How to Use the Garden Generator</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Select Your Plants</h3>
+                        <p>Browse through our collection of popular garden plants and click to select your favorites. Each plant displays with an emoji for easy identification.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Choose Garden Pets</h3>
+                        <p>Add friendly animals to your garden ecosystem. Select from various pets that complement your garden environment.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Design Your Layout</h3>
+                        <p>Use our interactive 3x3 grid to plan your garden layout. Click on plots to plant, water, and add sunlight as needed.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Manage Growth</h3>
+                        <p>Monitor water and sunlight levels for each plot. Use action buttons to maintain optimal growing conditions.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Harvest & Replant</h3>
+                        <p>Harvest mature plants and replant with new selections. Create crop rotations for sustainable gardening.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Use Section -->
+    <section class="info-section why-use-section">
+        <div class="container-content">
+            <h2>🎯 Why Choose Our Grow A Garden Generator Over Other Garden Planning Tools?</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #666; margin-bottom: 40px;">
+                Our Grow A Garden Generator revolutionizes garden planning by combining professional expertise with user-friendly design. Discover the compelling reasons why gardeners worldwide choose our Grow A Garden Generator as their primary garden planning solution.
+            </p>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <h3>🆓 100% Free Garden Planning Tool</h3>
+                    <p>Unlike other garden planning software, our Grow A Garden Generator is completely free with no hidden costs, subscription fees, or premium features locked behind paywalls. Access all professional-grade garden planning tools without spending a single dollar.</p>
+                </div>
+                <div class="benefit">
+                    <h3>👨‍🌾 Perfect for Beginning Gardeners</h3>
+                    <p>Our Grow A Garden Generator is specifically designed for newcomers to gardening. Learn fundamental garden planning principles, plant selection strategies, and seasonal timing without requiring extensive horticultural knowledge or previous gardening experience.</p>
+                </div>
+                <div class="benefit">
+                    <h3>🎨 Revolutionary Visual Planning Interface</h3>
+                    <p>Experience garden design like never before with our Grow A Garden Generator's advanced visual interface. Transform abstract garden concepts into concrete visual representations, eliminating complex charts, confusing diagrams, and technical jargon.</p>
+                </div>
+                <div class="benefit">
+                    <h3>📱 Cross-Platform Mobile Optimization</h3>
+                    <p>Our responsive Grow A Garden Generator works flawlessly across all devices and screen sizes. Plan your garden from smartphones, tablets, or desktop computers with consistent functionality and user experience regardless of your preferred platform.</p>
+                </div>
+                <div class="benefit">
+                    <h3>⚡ Real-Time Garden Planning Results</h3>
+                    <p>Get instant feedback and recommendations with our Grow A Garden Generator's lightning-fast processing. No lengthy loading times, no waiting for calculations, and no delays in visualizing your garden design changes and modifications.</p>
+                </div>
+                <div class="benefit">
+                    <h3>🌍 Comprehensive Educational Resources</h3>
+                    <p>Beyond basic planning, our Grow A Garden Generator serves as an educational platform. Learn about plant biology, soil requirements, pest management, companion planting, and sustainable gardening practices through interactive learning modules and detailed tutorials.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Grow A Garden Generator Section -->
+    <section class="info-section about-section">
+        <div class="container-content">
+            <h2>🌿 About Our Professional Grow A Garden Generator Platform</h2>
+            <div style="max-width: 900px; margin: 0 auto; line-height: 1.8; color: #555;">
+                <p>Welcome to the most advanced Grow A Garden Generator available on the internet today. Our sophisticated Grow A Garden Generator represents years of development by gardening experts, software engineers, and agricultural specialists who understand the complexities of modern garden planning. This comprehensive Grow A Garden Generator solution addresses every aspect of garden design, from initial concept development to final implementation and ongoing maintenance strategies.</p>
+                
+                <p>The foundation of our Grow A Garden Generator rests on proven horticultural principles combined with cutting-edge technology. Our team has meticulously crafted this Grow A Garden Generator to serve both novice gardeners seeking their first successful harvest and experienced horticulturists managing complex agricultural projects. Every feature within our Grow A Garden Generator has been tested, refined, and optimized based on real-world gardening scenarios and user feedback from our global community of garden enthusiasts.</p>
+                
+                <p>What sets our Grow A Garden Generator apart from conventional garden planning tools is its comprehensive approach to ecosystem design. Rather than simply arranging plants in a grid, our Grow A Garden Generator considers companion planting relationships, soil nutrient requirements, water distribution patterns, sunlight exposure angles, and seasonal growth cycles. This holistic methodology ensures that gardens designed with our Grow A Garden Generator achieve maximum productivity while maintaining ecological balance and sustainability.</p>
+                
+                <p>Our commitment to making professional garden planning accessible to everyone drives the continuous evolution of our Grow A Garden Generator. We regularly update the plant database, refine the planning algorithms, and enhance the user interface based on the latest research in sustainable agriculture and permaculture design principles. When you choose our Grow A Garden Generator, you're not just selecting a tool – you're joining a community of passionate gardeners committed to growing healthier, more productive gardens through intelligent planning and design.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Tutorials Section -->
+    <section id="tutorials" class="info-section tutorials-section">
+        <div class="container-content">
+            <h2>🎮 Learn to Build Your Own Grow A Garden Game</h2>
+            <p style="text-align: center; font-size: 1.2rem; color: #666; margin-bottom: 40px;">
+                Complete step-by-step tutorial series by TwinPlayz to help you create your own Grow A Garden game on Roblox
+            </p>
+            
+            <div class="tutorials-grid">
+                <div class="tutorial-item">
+                    <div class="tutorial-video">
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/LiCgdcyQGgY?modestbranding=1&showinfo=0" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="tutorial-content">
+                        <h3>Made A Better Grow a Garden</h3>
+                        <p>MeEnyu took Roblox's Grow a Garden and crafted the ultimate version that every player will love. You can call the new version of the Garden game Grow A Garden 2.</p>
+                    </div>
+                </div>
+                
+                <div class="tutorial-item">
+                    <div class="tutorial-video">
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/LBLNC6S7hi0" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="tutorial-content">
+                        <h3>Foltyn: I Started Over Using ONLY SUMMER SEEDS in Roblox Grow A Garden</h3>
+                        <p>Today I started over in Grow A Garden using only Super Seeds! Make sure you watch the whole video to find out what happens.</p>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="tutorial-features">
+                <h3>🌟 What You'll Learn</h3>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <span class="feature-icon">🌱</span>
+                        <span>Complete farming mechanics (planting, growing, harvesting)</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎨</span>
+                        <span>Designing animated GUIs with professional effects</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🛒</span>
+                        <span>Building functional in-game shops and monetization</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💾</span>
+                        <span>Implementing DataStore2 for reliable data saving</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🐾</span>
+                        <span>Creating pet systems and interactive elements</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <span>Optimized scripting practices and performance tips</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="info-section faq-section">
+        <div class="container-content">
+            <h2>❓ Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <h3>Is the Grow A Garden Generator really free?</h3>
+                    <p>Yes! Our comprehensive Grow A Garden Generator is completely free to use. Unlike other garden planning software, our Grow A Garden Generator has no hidden fees, premium upgrades, or subscription costs. All professional-grade features of our Grow A Garden Generator are available to everyone without any payment required.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need to create an account?</h3>
+                    <p>No account required! You can start planning your garden immediately without any registration or sign-up process.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Can I save my garden designs?</h3>
+                    <p>Currently, the generator works in real-time without saving features. You can take screenshots of your designs to keep them for reference.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What types of plants are included?</h3>
+                    <p>We feature popular garden plants including fruits, vegetables, and ornamental plants. Each plant is represented with clear emoji icons for easy identification.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>How accurate is the garden planning?</h3>
+                    <p>Our tool is designed for basic garden planning and educational purposes. For detailed agricultural planning, consult with local gardening experts.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Does it work on mobile devices?</h3>
+                    <p>Yes! The garden generator is fully responsive and works great on smartphones, tablets, and desktop computers.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>What about the Roblox item generator?</h3>
+                    <p>The Roblox item generator is a demonstration tool showing how fake generators work. It's educational content about online safety and doesn't provide real items.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🌱 Grow A Garden Generator</h3>
+                <p>Transform your gardening dreams into reality with our comprehensive Grow A Garden Generator. Our professional-grade garden planning platform combines advanced technology with intuitive design, making it the premier choice for gardeners worldwide. Whether you're planning a small balcony garden or designing extensive landscape projects, our Grow A Garden Generator provides the tools, resources, and expertise you need to succeed.</p>
+                <p>Join thousands of satisfied gardeners who trust our Grow A Garden Generator for their most important garden planning projects. Start growing your perfect garden today!</p>
+            </div>
+                            <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-to-use">How to Use</a></li>
+                        <li><a href="#tutorials">Tutorials</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>For questions or support, please refer to our FAQ section above.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Grow A Garden Generator. All rights reserved. | Educational tool for garden planning.</p>
+        </div>
+    </footer>
+
+    <!-- Progress Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div id="modal-content">
+                <h3>🔄 Processing Your Request...</h3>
+                
+                <div class="progress-info">
+                    <strong>Username:</strong> <span id="modal-username-display"></span>
+                </div>
+                
+                <div class="progress-info" style="background: #f0f8ff;">
+                    <span id="current-step-display">Connecting to Roblox server...</span>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="modal-progress-fill"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Overall Progress</span>
+                        <span><strong><span id="modal-progress-percentage">0</span>%</strong></span>
+                    </div>
+                </div>
+
+                <h4>Processing Steps:</h4>
+                <ul class="processing-steps" id="modal-progress-steps">
+                    <li><span class="step-icon">●</span>Connecting to Roblox server...</li>
+                    <li><span class="step-icon">●</span>Connection successful!</li>
+                    <li><span class="step-icon">●</span>Checking username...</li>
+                    <li><span class="step-icon">●</span>Checking successfully!</li>
+                    <li><span class="step-icon">●</span>Generating items...</li>
+                    <li><span class="step-icon">●</span>Transferring items to Grow a Garden game...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedItems = {
+            plants: new Map(),
+            pets: new Map()
+        };
+
+        let currentStep = 0;
+        let progressInterval;
+
+        // Garden state management
+        let gardenPlots = [
+            { plant: '🌱', water: 1, sun: 1, growth: 1 },
+            { plant: '🌻', water: 1, sun: 1, growth: 3 },
+            { plant: '🌿', water: 1, sun: 1, growth: 2 },
+            { plant: '🌸', water: 1, sun: 1, growth: 2 },
+            { plant: '🌹', water: 2, sun: 1, growth: 3 },
+            { plant: '🍀', water: 1, sun: 1, growth: 2 },
+            { plant: '🍀', water: 1, sun: 2, growth: 2 },
+            { plant: null, water: 1, sun: 2, growth: 0 },
+            { plant: '🌲', water: 1, sun: 3, growth: 4 }
+        ];
+
+        const plantEmojis = ['🍉', '🎃', '🌶️', '🍄'];
+        const seedEmojis = ['🌱', '🌿', '🍀', '🌸', '🌻', '🌹', '🌳', '🌲'];
+
+        function updateGardenDisplay() {
+            const plots = document.querySelectorAll('.garden-plot');
+            plots.forEach((plot, index) => {
+                const plotData = gardenPlots[index];
+                const waterIcon = plot.querySelector('.water-icon');
+                const sunIcon = plot.querySelector('.sun-icon');
+                const content = plot.querySelector('.plot-content');
+                
+                // Update water display
+                waterIcon.textContent = '💧'.repeat(plotData.water);
+                
+                // Update sun display
+                sunIcon.textContent = '☀️'.repeat(plotData.sun);
+                
+                // Update plant content
+                if (plotData.plant) {
+                    content.textContent = plotData.plant;
+                    content.className = 'plot-content';
+                } else {
+                    content.textContent = '🕳️';
+                    content.className = 'plot-content plot-empty';
+                }
+                
+                // Add click handler
+                plot.onclick = () => handlePlotClick(index);
+            });
+            
+            // Update message
+            const emptyPlots = gardenPlots.filter(plot => !plot.plant).length;
+            const message = document.getElementById('garden-message');
+            if (emptyPlots > 0) {
+                message.textContent = `${emptyPlots} empty plot${emptyPlots > 1 ? 's' : ''} available for planting!`;
+                message.style.color = '#4CAF50';
+            } else {
+                message.textContent = 'No empty plots available! Try harvesting some plants.';
+                message.style.color = '#FF9800';
+            }
+        }
+
+        function handlePlotClick(plotIndex) {
+            const plot = gardenPlots[plotIndex];
+            const message = document.getElementById('garden-message');
+            
+            if (!plot.plant) {
+                // Empty plot - try to plant
+                const selectedPlants = Array.from(selectedItems.plants.keys());
+                if (selectedPlants.length > 0) {
+                    const randomPlant = selectedPlants[Math.floor(Math.random() * selectedPlants.length)];
+                    const plantEmoji = selectedItems.plants.get(randomPlant);
+                    
+                    plot.plant = '🌱';
+                    plot.growth = 1;
+                    updateGardenDisplay();
+                    
+                    message.textContent = `🌱 Planted ${randomPlant} seed!`;
+                    message.style.color = '#4CAF50';
+                    
+                    // Grow after delay
+                    setTimeout(() => {
+                        // 根据植物名称设置对应的emoji用于garden显示
+                        const plantEmojiMap = {
+                            'Watermelon': '🍉',
+                            'Pumpkin': '🎃',
+                            'Pepper': '🌶️',
+                            'Mushroom': '🍄'
+                        };
+                        
+                        plot.plant = plantEmojiMap[randomPlant] || '🌱';
+                        plot.growth = 2;
+                        updateGardenDisplay();
+                    }, 1000);
+                } else {
+                    message.textContent = 'Please select some plants first!';
+                    message.style.color = '#FF5722';
+                }
+            } else {
+                // Plant exists - harvest it
+                const harvestedPlant = plot.plant;
+                plot.plant = null;
+                plot.growth = 0;
+                plot.water = 1;
+                plot.sun = 1;
+                
+                message.textContent = `🌾 Harvested ${harvestedPlant}!`;
+                message.style.color = '#9C27B0';
+                
+                updateGardenDisplay();
+            }
+            
+            setTimeout(() => {
+                updateGardenDisplay();
+            }, 2000);
+        }
+
+        function toggleItem(element, itemName, category) {
+            const isSelected = element.classList.contains('selected');
+            
+            if (isSelected) {
+                // Remove from selection
+                element.classList.remove('selected');
+                selectedItems[category].delete(itemName);
+            } else {
+                // Add to selection
+                element.classList.add('selected');
+                const imgElement = element.querySelector('.item-emoji img');
+                const emoji = `<img src="${imgElement.src}" alt="${imgElement.alt}">`;
+                selectedItems[category].set(itemName, emoji);
+            }
+            
+            updateSelectedItemsDisplay();
+        }
+
+        function updateSelectedItemsDisplay() {
+            updateCategoryDisplay('plants');
+            updateCategoryDisplay('pets');
+            updateGenerateButton();
+            updateSidebarVisibility();
+        }
+
+        function updateSidebarVisibility() {
+            const sidebar = document.querySelector('.sidebar');
+            const totalSelected = selectedItems.plants.size + selectedItems.pets.size;
+            
+            if (totalSelected === 0) {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'block';
+                
+                // 动态调整sidebar位置，确保不被header遮挡
+                const header = document.querySelector('.site-header');
+                if (header) {
+                    const headerHeight = header.offsetHeight;
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    if (isMobile) {
+                        sidebar.style.top = (headerHeight + 10) + 'px';
+                        // 移动端默认折叠
+                        if (!sidebar.classList.contains('collapsed')) {
+                            sidebar.classList.add('collapsed');
+                        }
+                        setupMobileSidebarToggle();
+                    } else {
+                        sidebar.style.top = (headerHeight + 20) + 'px';
+                        sidebar.style.maxHeight = `calc(100vh - ${headerHeight + 40}px)`;
+                        sidebar.classList.remove('collapsed');
+                    }
+                }
+            }
+        }
+
+        function setupMobileSidebarToggle() {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarHeader = sidebar.querySelector('.sidebar-header');
+            
+            // 移除之前的事件监听器
+            sidebarHeader.removeEventListener('click', toggleMobileSidebar);
+            // 添加新的事件监听器
+            sidebarHeader.addEventListener('click', toggleMobileSidebar);
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                sidebar.classList.toggle('collapsed');
+            }
+        }
+
+        function updateCategoryDisplay(category) {
+            const container = document.getElementById(`selected-${category}`);
+            const items = selectedItems[category];
+            
+            if (items.size === 0) {
+                container.innerHTML = `<div class="empty-message">No ${category} selected</div>`;
+            } else {
+                container.innerHTML = '';
+                items.forEach((emoji, itemName) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'selected-item';
+                    itemDiv.innerHTML = `
+                        <div class="selected-item-emoji">${emoji}</div>
+                        <div class="selected-item-name">${itemName}</div>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+            }
+        }
+
+        function updateGenerateButton() {
+            const username = document.getElementById('username').value.trim();
+            const generateBtn = document.getElementById('generate-btn');
+            generateBtn.disabled = username === '';
+        }
+
+        // Enable generate button when username is entered
+        document.getElementById('username').addEventListener('input', function() {
+            updateGenerateButton();
+        });
+
+        function startGeneration() {
+            const username = document.getElementById('username').value.trim();
+            if (username === '') {
+                alert('Please enter your Roblox username!');
+                return;
+            }
+
+            // Show modal
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('modal-username-display').textContent = username;
+            
+            // Reset progress
+            currentStep = 0;
+            document.getElementById('modal-progress-fill').style.width = '0%';
+            document.getElementById('modal-progress-percentage').textContent = '0';
+            document.getElementById('current-step-display').textContent = 'Connecting to Roblox server...';
+            
+            // Reset step indicators
+            document.querySelectorAll('#modal-progress-steps li').forEach((li, index) => {
+                li.classList.remove('completed', 'current');
+                const icon = li.querySelector('.step-icon');
+                icon.classList.remove('completed', 'current');
+                icon.textContent = '●';
+            });
+            
+            // Start progress simulation
+            simulateProgress();
+        }
+
+        function simulateProgress() {
+            const steps = document.querySelectorAll('#modal-progress-steps li');
+            const stepTexts = [
+                'Connecting to Roblox server...',
+                'Connection successful!',
+                'Checking username...',
+                'Checking successfully!',
+                'Generating items...',
+                'Transferring items to Grow a Garden game...'
+            ];
+            const totalSteps = steps.length;
+            
+            progressInterval = setInterval(() => {
+                if (currentStep < totalSteps) {
+                    // Mark current step as completed
+                    if (currentStep > 0) {
+                        const prevStep = steps[currentStep - 1];
+                        prevStep.classList.remove('current');
+                        prevStep.classList.add('completed');
+                        const prevIcon = prevStep.querySelector('.step-icon');
+                        prevIcon.classList.remove('current');
+                        prevIcon.classList.add('completed');
+                        prevIcon.textContent = '✓';
+                    }
+                    
+                    // Mark new step as current
+                    const currentStepElement = steps[currentStep];
+                    currentStepElement.classList.add('current');
+                    const currentIcon = currentStepElement.querySelector('.step-icon');
+                    currentIcon.classList.add('current');
+                    
+                    // Update current step display
+                    document.getElementById('current-step-display').textContent = stepTexts[currentStep];
+                    
+                    // Update progress bar
+                    const progress = ((currentStep + 1) / totalSteps) * 100;
+                    document.getElementById('modal-progress-fill').style.width = progress + '%';
+                    document.getElementById('modal-progress-percentage').textContent = Math.round(progress);
+                    
+                    currentStep++;
+                } else {
+                    // Complete last step
+                    const lastStep = steps[totalSteps - 1];
+                    lastStep.classList.remove('current');
+                    lastStep.classList.add('completed');
+                    const lastIcon = lastStep.querySelector('.step-icon');
+                    lastIcon.classList.remove('current');
+                    lastIcon.classList.add('completed');
+                    lastIcon.textContent = '✓';
+                    
+                    // Show completion
+                    clearInterval(progressInterval);
+                    setTimeout(showReveal, 1000);
+                }
+            }, 2000 + Math.random() * 1000); // Random delay between 2-3 seconds
+        }
+
+        function showReveal() {
+            const modalContent = document.getElementById('modal-content');
+            const username = document.getElementById('username').value;
+            const totalSelected = selectedItems.plants.size + selectedItems.pets.size;
+            
+            modalContent.innerHTML = `
+                <div class="reveal-message">
+                    <h2>Just Kidding! 😄</h2>
+                    <p><strong>This is just a fun simulator! 🎉</strong></p>
+                    <br>
+                    <p>This generator doesn't actually provide you with real items in Roblox. It's just a fun way to explore and "collect" items from the Grow a Garden game!</p>
+                    <br>
+                    <p>Through this tool, I want to tell you a fact: All the online generators I've tried are fake! So please spend time managing your garden, don't daydream all day!</p>
+                    <br>
+                    <p>You selected <strong>${totalSelected}</strong> items, Username: <strong>${username}</strong></p>
+                    <br>
+                    <button class="generate-btn" onclick="closeModal()" style="margin-top: 1rem;">Got it! 👍</button>
+                </div>
+            `;
+        }
+        
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+            // Don't clear username and selections to let user try again if they want
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('modal-overlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Garden action functions
+        function sowSeed() {
+            const selectedPlants = Array.from(selectedItems.plants.keys());
+            if (selectedPlants.length === 0) {
+                alert('Please select some plants first!');
+                return;
+            }
+            
+            const emptyPlots = gardenPlots.map((plot, index) => ({ plot, index })).filter(item => !item.plot.plant);
+            if (emptyPlots.length === 0) {
+                alert('No empty plots available! Try harvesting some plants first.');
+                return;
+            }
+            
+            // Plant a random selected plant in the first empty plot
+            const randomPlant = selectedPlants[Math.floor(Math.random() * selectedPlants.length)];
+            const plantEmoji = selectedItems.plants.get(randomPlant);
+            const firstEmptyPlot = emptyPlots[0];
+            
+            gardenPlots[firstEmptyPlot.index].plant = '🌱'; // Start as seedling
+            gardenPlots[firstEmptyPlot.index].growth = 1;
+            
+            updateGardenDisplay();
+            
+            // Show growth animation after a delay
+            setTimeout(() => {
+                // 根据植物名称设置对应的emoji用于garden显示
+                const plantEmojiMap = {
+                    'Watermelon': '🍉',
+                    'Pumpkin': '🎃',
+                    'Pepper': '🌶️',
+                    'Mushroom': '🍄'
+                };
+                
+                gardenPlots[firstEmptyPlot.index].plant = plantEmojiMap[randomPlant] || '🌱';
+                gardenPlots[firstEmptyPlot.index].growth = 2;
+                updateGardenDisplay();
+            }, 1000);
+        }
+
+        function waterPlants() {
+            let plantsWatered = 0;
+            gardenPlots.forEach(plot => {
+                if (plot.plant && plot.water < 3) {
+                    plot.water = Math.min(plot.water + 1, 3);
+                    plantsWatered++;
+                }
+            });
+            
+            updateGardenDisplay();
+            
+            if (plantsWatered > 0) {
+                const message = document.getElementById('garden-message');
+                message.textContent = `💧 Watered ${plantsWatered} plant${plantsWatered > 1 ? 's' : ''}!`;
+                message.style.color = '#2196F3';
+                
+                setTimeout(() => {
+                    updateGardenDisplay();
+                }, 2000);
+            } else {
+                alert('All plants are already well watered!');
+            }
+        }
+
+        function addSunlight() {
+            let plantsEnlightened = 0;
+            gardenPlots.forEach(plot => {
+                if (plot.plant && plot.sun < 3) {
+                    plot.sun = Math.min(plot.sun + 1, 3);
+                    plantsEnlightened++;
+                }
+            });
+            
+            updateGardenDisplay();
+            
+            if (plantsEnlightened > 0) {
+                const message = document.getElementById('garden-message');
+                message.textContent = `☀️ Added sunlight to ${plantsEnlightened} plant${plantsEnlightened > 1 ? 's' : ''}!`;
+                message.style.color = '#FF9800';
+                
+                setTimeout(() => {
+                    updateGardenDisplay();
+                }, 2000);
+            } else {
+                alert('All plants already have plenty of sunlight!');
+            }
+        }
+
+        function growRandomly() {
+            const actions = ['sow', 'water', 'sun', 'harvest'];
+            const randomAction = actions[Math.floor(Math.random() * actions.length)];
+            
+            const message = document.getElementById('garden-message');
+            
+            switch(randomAction) {
+                case 'sow':
+                    // Plant random seeds
+                    const emptyPlots = gardenPlots.map((plot, index) => ({ plot, index })).filter(item => !item.plot.plant);
+                    if (emptyPlots.length > 0) {
+                        const randomEmptyPlot = emptyPlots[Math.floor(Math.random() * emptyPlots.length)];
+                        const randomSeed = seedEmojis[Math.floor(Math.random() * seedEmojis.length)];
+                        gardenPlots[randomEmptyPlot.index].plant = randomSeed;
+                        gardenPlots[randomEmptyPlot.index].growth = Math.floor(Math.random() * 3) + 1;
+                        message.textContent = '🌱 Randomly planted a new seed!';
+                        message.style.color = '#4CAF50';
+                    }
+                    break;
+                    
+                case 'water':
+                    gardenPlots.forEach(plot => {
+                        if (plot.plant && Math.random() > 0.5) {
+                            plot.water = Math.min(plot.water + 1, 3);
+                        }
+                    });
+                    message.textContent = '💧 Random watering completed!';
+                    message.style.color = '#2196F3';
+                    break;
+                    
+                case 'sun':
+                    gardenPlots.forEach(plot => {
+                        if (plot.plant && Math.random() > 0.5) {
+                            plot.sun = Math.min(plot.sun + 1, 3);
+                        }
+                    });
+                    message.textContent = '☀️ Random sunlight boost applied!';
+                    message.style.color = '#FF9800';
+                    break;
+                    
+                case 'harvest':
+                    const plantsToHarvest = gardenPlots.map((plot, index) => ({ plot, index })).filter(item => item.plot.plant && item.plot.growth >= 2);
+                    if (plantsToHarvest.length > 0) {
+                        const randomPlant = plantsToHarvest[Math.floor(Math.random() * plantsToHarvest.length)];
+                        const harvestedPlant = gardenPlots[randomPlant.index].plant;
+                        
+                        // Convert to fruit/vegetable
+                        if (plantEmojis.includes(harvestedPlant)) {
+                            // Already a mature plant
+                            gardenPlots[randomPlant.index].plant = null;
+                            gardenPlots[randomPlant.index].growth = 0;
+                        } else {
+                            // Grow to mature plant
+                            const randomMaturePlant = plantEmojis[Math.floor(Math.random() * plantEmojis.length)];
+                            gardenPlots[randomPlant.index].plant = randomMaturePlant;
+                            gardenPlots[randomPlant.index].growth = 3;
+                        }
+                        message.textContent = '🌾 Random harvesting completed!';
+                        message.style.color = '#9C27B0';
+                    }
+                    break;
+            }
+            
+            updateGardenDisplay();
+            
+            setTimeout(() => {
+                updateGardenDisplay();
+            }, 3000);
+        }
+
+        // 窗口大小变化时重新计算sidebar位置
+        window.addEventListener('resize', function() {
+            if (selectedItems.plants.size + selectedItems.pets.size > 0) {
+                setTimeout(() => {
+                    updateSidebarVisibility();
+                }, 100); // 延迟一点确保窗口大小已经更新
+            }
+        });
+
+        // 页面加载完成后计算sidebar位置
+        window.addEventListener('load', function() {
+            updateSidebarVisibility();
+        });
+
+        // 监听滚动事件，在Interactive Garden Simulator以下部分隐藏sidebar
+        window.addEventListener('scroll', function() {
+            const featuresSection = document.querySelector('#features');
+            const sidebar = document.querySelector('.sidebar');
+            
+            if (featuresSection && sidebar) {
+                const featuresRect = featuresSection.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
+                
+                // 当features section进入视窗时隐藏sidebar（即滑动到Interactive Garden Simulator以下）
+                if (featuresRect.top < viewportHeight) {
+                    sidebar.style.opacity = '0';
+                    sidebar.style.pointerEvents = 'none';
+                    sidebar.style.transform = 'translateX(100%)';
+                } else {
+                    // 当在Interactive Garden Simulator及以上部分时显示sidebar
+                    const totalSelected = selectedItems.plants.size + selectedItems.pets.size;
+                    if (totalSelected > 0) {
+                        sidebar.style.opacity = '1';
+                        sidebar.style.pointerEvents = 'auto';
+                        sidebar.style.transform = 'translateX(0)';
+                    }
+                }
+            }
+        });
+
+        // Initialize the display
+        updateSelectedItemsDisplay();
+        updateGardenDisplay();
+    </script>
+</body>
+</html>
